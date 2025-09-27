@@ -18,9 +18,6 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private StringUtil stringUtil;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Override
@@ -32,19 +29,6 @@ public class UserServiceImpl implements UserService {
         try {
 
             returnValue = new AddUserResult();
-
-            if (stringUtil.isNullOrEmpty(criteria.getFirstName())) {
-                throw new GenericException(400, "First name is required");
-            }
-            if (stringUtil.isNullOrEmpty(criteria.getLastName())) {
-                throw new GenericException(400, "Last name is required");
-            }
-            if (stringUtil.isNullOrEmpty(criteria.getEmail())) {
-                throw new GenericException(400, "Email is required");
-            }
-            if (stringUtil.isNullOrEmpty(criteria.getPhoneNumber())) {
-                throw new GenericException(400, "Phone is required");
-            }
 
             user = new User();
             user.setFirstName(criteria.getFirstName());
