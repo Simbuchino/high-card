@@ -7,5 +7,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AddUserResponse extends GenericResponse {
-
+    private String guid;
 }

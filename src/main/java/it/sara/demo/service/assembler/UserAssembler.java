@@ -9,7 +9,8 @@ public class UserAssembler {
 
     public UserDTO toDTO(User user) {
         UserDTO returnValue = new UserDTO();
-        returnValue.setEmail(user.getEmail().substring(user.getEmail().lastIndexOf("@") + 1));
+        returnValue.setPhoneNumber(user.getPhoneNumber());
+        returnValue.setEmail(user.getEmail());
         returnValue.setGuid(user.getGuid());
         returnValue.setFirstName(user.getFirstName());
         returnValue.setLastName(user.getLastName());
