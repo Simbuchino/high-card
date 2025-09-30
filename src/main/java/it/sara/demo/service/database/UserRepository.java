@@ -28,7 +28,29 @@ public class UserRepository {
         return FakeDatabase.TABLE_USER;
     }
 
+    /**
+     * Recupera utenti filtrati, ordinati e paginati secondo i criteri specificati.
+     * @param criteriaGetUsers criteri di ricerca, ordinamento e paginazione
+     * @return risultato paginato con utenti e totale
+     */
     public PageUserResult getByCriteria(CriteriaGetUsers criteriaGetUsers) {
         return RepositoryUtil.filterSortPaginateUsers(getAll(), criteriaGetUsers);
     }
+
+    public Optional<User> getByEmail(String email) {
+        return FakeDatabase.TABLE_USER.stream()
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
+                .findFirst();
+        }
+
+    public boolean update(User user) {
+        for (int i = 0; i < FakeDatabase.TABLE_USER.size(); i++) {
+            if (FakeDatabase.TABLE_USER.get(i).getGuid().equals(user.getGuid())) {
+                FakeDatabase.TABLE_USER.set(i, user);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

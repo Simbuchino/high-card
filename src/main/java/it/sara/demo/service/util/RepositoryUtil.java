@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Utility per filtrare, ordinare e paginare liste di utenti.
+ * Usata principalmente da UserRepository per getUsers.
+ * Mantiene separata la logica di repository dal service, come avverrebbe con un DB reale.
+ */
 @Component
 public class RepositoryUtil {
 

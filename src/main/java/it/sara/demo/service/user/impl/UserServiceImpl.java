@@ -1,6 +1,7 @@
 package it.sara.demo.service.user.impl;
 
 import it.sara.demo.dto.UserDTO;
+import it.sara.demo.enums.UserRole;
 import it.sara.demo.exception.GenericException;
 import it.sara.demo.service.assembler.UserAssembler;
 import it.sara.demo.service.database.UserRepository;
@@ -17,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private UserAssembler userAssembler;
+    @Autowired
+    private StringUtil stringUtil;
 
     @Override
     public AddUserResult addUser(CriteriaAddUser criteria) throws GenericException {
@@ -45,9 +50,21 @@ public class UserServiceImpl implements UserService {
             user.setEmail(criteria.getEmail());
             user.setPhoneNumber(criteria.getPhoneNumber());
 
+            user.setRole(criteria.getRole());
+            user.setPasswordNeedsReset(true);
+
+            String rawToken = stringUtil.generateRawToken();
+            user.setPasswordResetToken(stringUtil.hashToken(rawToken));
+            user.setPasswordResetTokenExpiry(Instant.now().plus(1, ChronoUnit.HOURS));
+            user.setPasswordResetTokenUsed(false);
+
             if (!userRepository.save(user)) {
                 throw new GenericException(500, "Error saving user");
             }
+
+            // NOTA: Dopo aver creato l'utente, è necessario inviare tramite canali secondari
+            // il link per settare la nuova password + il token.
+            // Un'idea potrebbe essere inviare questo via email all'utente inserito.
 
             returnValue.setGuid(user.getGuid());
 

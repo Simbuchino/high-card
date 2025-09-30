@@ -1,5 +1,6 @@
 package it.sara.demo.web.user.request;
 
+import it.sara.demo.enums.UserRole;
 import it.sara.demo.web.request.GenericRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -27,4 +28,6 @@ public class AddUserRequest extends GenericRequest {
     @NotBlank(message = "Phone is required")
     @Pattern(regexp = "^(?:\\+39|0039)3\\d{9}$", message = "Phone not valid")
     private String phoneNumber;
+
+    private UserRole role = UserRole.USER;
 }
